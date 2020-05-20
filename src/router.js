@@ -12,9 +12,9 @@ import DashboardPage from './components/Dashboard.vue'
 Vue.use(VueRouter);
 
 const routes = [
-    { path: '/', component: Home},
-    { path: '/signup', component: SignupPage },
-    { path: '/signin', component: SigninPage },
+    { path: '/', component: Home, name: 'home'},
+    { path: '/signup', component: SignupPage, name: 'signup'},
+    { path: '/signin', component: SigninPage, name: 'signin'},
     { 
         path: '/courses', 
         component: Courses,
@@ -28,6 +28,7 @@ const routes = [
     },
     { 
         path: '/dashboard', 
+        name: 'dashboard',
         component: DashboardPage, 
         beforeEnter (to, from, next) {
             if (store.state.idToken){

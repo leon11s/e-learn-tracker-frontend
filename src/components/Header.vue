@@ -19,8 +19,8 @@
                 <!-- TODO Dodaj ostale linke in gumbe -->
         
             </ul>
-                <router-link v-if="!auth" to="/signup" type="button" class="btn btn-dark" tag="button">Sign Up</router-link>
-                <router-link v-if="!auth" to="/signin" type="button" class="btn btn-dark" tag="button">Sign In</router-link>
+                <router-link v-if="!auth" to="/signup" type="button" class="btn btn-dark buttons-custom" tag="button">Sign Up</router-link>
+                <router-link v-if="!auth" to="/signin" type="button" class="btn btn-dark buttons-custom" tag="button">Sign In</router-link>
                 <button @click="onLogout" v-if="auth" class="btn btn-danger">Logout</button>
         </div>
     </nav>
@@ -45,5 +45,10 @@ export default {
 /* change the background color - https://colorhunt.co/palette/171695*/ 
 .bg-custom {
     background-color: #2a7886;
+}
+
+.buttons-custom {
+    margin-right: 10px;
+    margin-left: 10px;
 }
 </style>

@@ -33,8 +33,12 @@ export default new Vuex.Store({
             axios.post('/users', signUpData)
                 .then(res => {
                     console.log(res)
+                    router.push('signin')
                 })
-                .catch(error => console.log(error)) 
+                .catch(error => {
+                    console.log(error)
+                    alert("Failed creating new user!")
+                }) 
         },
         login ({commit, dispatch}, authData) {
             axios.post('/login/access-token', authData)
@@ -46,8 +50,12 @@ export default new Vuex.Store({
                     localStorage.setItem('token', res.data.access_token)
                     localStorage.setItem('expirationDate', expirationDate)
                     dispatch('setLogoutTimer', res.data.expiresIn) 
+                    router.push('dashboard')
                 })
-                .catch(error => console.log(error)) 
+                .catch(error => {
+                    console.log(error)
+                    alert("Username or password is incorrect")
+                }) 
         },
         tryAutoLogin({ commit }) {
             const token = localStorage.getItem('token')

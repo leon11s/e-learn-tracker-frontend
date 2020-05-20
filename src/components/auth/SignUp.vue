@@ -38,6 +38,7 @@
                   id="username"
                   @blur="$v.username.$touch()"
                   v-model="username">
+          <p v-if="!$v.username.uniqueUsername" class="error-text">Username already used.</p>
         </div>
 
         <div class="input" :class="{invalid: $v.password.$error}">
@@ -69,7 +70,8 @@
 
         
         <div class="submit" >
-          <button type="submit" :disabled="$v.$invalid">Submit</button>
+          <!-- dovolimo klik na submit samo v primeru, da so vsa polja uspešno validirana. -->
+          <button type="submit" :disabled="$v.$invalid">Submit</button> 
         </div>
 
       </form>
@@ -97,6 +99,7 @@
       email: {
         required,
         email,
+        // validiramo če email že obstaja v bazi
         uniqueEmail: val => {
           if (val === '') return true
           return axios.get('/users/emailexist?email=' + val)
@@ -112,7 +115,15 @@
         required
       }, 
       username: {
-        required
+        required,
+        // validiramo če username že obstaja v bazi
+        uniqueUsername: val => {
+          if (val === '') return true
+          return axios.get('/users/usernameexist?username=' + val)
+            .then(res => {
+              return res.data.exists === false
+            })
+        }
       },
       password: {
         required,
@@ -137,6 +148,7 @@
           password: this.password,
         }
         this.$store.dispatch('signup', formData)
+        
       }
     }
   }
