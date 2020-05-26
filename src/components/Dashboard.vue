@@ -4,9 +4,7 @@
     <p>You should only get here if you're authenticated!</p>
     <p v-if="email">You are logged with email: {{ email }}</p>
 
-    <v-btn class="mx-2" fab dark color="indigo">
-        <v-icon dark>mdi-plus</v-icon>
-    </v-btn>
+    
   </div>
 </template>
 

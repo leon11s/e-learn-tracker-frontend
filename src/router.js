@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import store from './store'
+import store from './store/store'
 
 import Home from './components/Home.vue'
 import Courses from './components/courses/Courses.vue'
@@ -18,6 +18,7 @@ const routes = [
     { 
         path: '/courses', 
         component: Courses,
+        name: 'courses',
         beforeEnter (to, from, next) {
             if (store.state.idToken){
                 next()
