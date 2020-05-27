@@ -4,13 +4,13 @@ import axios from '../axios-auth'
 
 import router from '../router'
 
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
         idToken: null,
         user: null,
+        courses_all: [],
     },
     mutations: {
         authUser (state, userData){
@@ -22,6 +22,9 @@ export default new Vuex.Store({
         clearAuthData (state) {
             state.idToken = null
             state.user = null
+        },
+        'SWOW_ALL_COURSES' (state, courses) {
+            state.courses_all = courses;
         }
     },
     actions: {
@@ -88,7 +91,55 @@ export default new Vuex.Store({
                     commit('storeUser', data)
                 })
                 .catch(error => console.log(error))
-        }
+        },
+        getAllCourses ({commit, state}){
+            axios.get('/courses', {headers: {'Authorization': 'Bearer ' + state.idToken}})
+            .then(res => {
+                console.log(res);
+                const data = res.data
+                const courses = [];
+                for (let key in data){
+                    courses.push(data[key]);
+                } 
+                console.log(courses);
+                commit('SWOW_ALL_COURSES', courses);
+            })
+            .catch(error => console.log(error))
+        },
+        deleteCourse({commit, dispatch, state}, course_id){
+            axios.delete('/courses/' + course_id, {headers: {'Authorization': 'Bearer ' + state.idToken}})
+                .then(res => {
+                    console.log(res)
+                    dispatch('getAllCourses')
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert("Error removing course! Please reload and try later.")
+                }) 
+        },
+        createCourse({commit, state, dispatch}, data){
+            axios.post('/courses', data, {headers: {'Authorization': 'Bearer ' + state.idToken}})
+                .then(res => {
+                    console.log(res)
+                    dispatch('getAllCourses')
+                })
+                .catch(error => {
+                    console.log(error)
+                    alert("Error adding course! Please try later.")
+                }) 
+        },
+        updateCourse({commit, state, dispatch}, {course_id, data}){
+            axios.put('/courses/' + course_id, data, {headers: {'Authorization': 'Bearer ' + state.idToken}})
+                .then(res => {
+                    console.log(res)
+                    dispatch('getAllCourses')
+                })
+                .catch(error => {
+                    console.log(error)
+                    console.log(data)
+                    alert("Error updating course! Please try later.")
+                }) 
+        },
     },
     getters: {
         user (state) {
@@ -96,6 +147,9 @@ export default new Vuex.Store({
         },
         isAuthenticated (state) {
             return state.idToken !== null 
+        },
+        courses: state => {
+            return state.courses_all;
         }
     },
 })

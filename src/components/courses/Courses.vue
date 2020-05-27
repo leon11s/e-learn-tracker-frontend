@@ -5,7 +5,7 @@
             <v-container fill-height fluid>
                 <!-- prikaz vseh tečajev -->
                 <v-row align="center" justify="center">
-                        <app-device v-for="(course, index) in courses" v-bind:key="course.index" :course="course" v-on:delete-course="deleteCourse(index)">></app-device>
+                        <app-course v-for="course in courses" v-bind:key="course.index" :course="course">></app-course>
                 </v-row>
                 <!-- okno za dodajanje tečaja -->
                 <v-dialog v-model="dialog" persistent max-width="600px">
@@ -127,27 +127,9 @@ import axios from './../../axios-auth'
 import router from '../../router'
 
 export default {
-    //želimo pridobiti course iz APija preko GET metode
-    created(){
-        axios.get('/courses', {headers: {'Authorization': 'Bearer ' + this.$store.state.idToken}})
-            .then(res => {
-                console.log(res);
-                const data = res.data
-                const courses = [];
-                for (let key in data){
-                    courses.push(data[key]);
-                } 
-                console.log(courses);
-                this.courses = courses
-            })
-            .catch(error => console.log(error))
-    },
-
     data(){
         return {
-            courses: [],
             dialog: false,
-            index: 0,
             startCourseDateMenu: false,
             courseInfo: {
                 courseProvider: '',
@@ -160,32 +142,26 @@ export default {
         };
     },
     components: {
-        appDevice: Course
+        appCourse: Course
+    },
+    computed: {
+        courses() {
+            return this.$store.getters.courses;
+        }
     },
     methods: {
-      onSubmitNewCourse () {
-        this.dialog = false
-        const newCourseFormData = {
-          course_provider: this.courseInfo.courseProvider,
-          course_name: this.courseInfo.courseName,
-          course_start_date: this.courseInfo.courseStartDate,
-          course_status: this.courseInfo.courseStatus,
-          course_URL: this.courseInfo.courseUrl,
-          course_payment_type: this.courseInfo.coursePaymentType,
+        onSubmitNewCourse () {
+            this.dialog = false
+            const newCourseFormData = {
+              course_provider: this.courseInfo.courseProvider,
+              course_name: this.courseInfo.courseName,
+              course_start_date: this.courseInfo.courseStartDate,
+              course_status: this.courseInfo.courseStatus,
+              course_URL: this.courseInfo.courseUrl,
+              course_payment_type: this.courseInfo.coursePaymentType,
+            }
+            this.$store.dispatch('createCourse', newCourseFormData)   
         }
-        axios.post('/courses', newCourseFormData, {headers: {'Authorization': 'Bearer ' + this.$store.state.idToken}})
-            .then(res => {
-                console.log(res)
-                this.courses.push(newCourseFormData)
-            })
-            .catch(error => {
-                console.log(error)
-                alert("Error adding course! Please try later.")
-            }) 
-      },
-      deleteCourse: function(index){
-          this.courses.splice(index, 1);
-      }
     }
 }
 </script>

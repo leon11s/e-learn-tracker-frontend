@@ -18,7 +18,8 @@
       appHeader: Header
     },
     created(){
-      this.$store.dispatch('tryAutoLogin')
+      this.$store.dispatch('tryAutoLogin');
+      this.$store.dispatch('getAllCourses');
     }
   }
 </script>
