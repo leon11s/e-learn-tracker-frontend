@@ -1,10 +1,7 @@
 <template>
   <div id="dashboard">
-    <h1>That's the dashboard!</h1>
-    <p>You should only get here if you're authenticated!</p>
-    <p v-if="email">You are logged with email: {{ email }}</p>
-
-    
+    <h1>{{ name }}, welcome to the E-Learn Tracker Dashboard!</h1>
+    <p>To view and add new courses go to Courses Tab.</p>
   </div>
 </template>
 
@@ -16,6 +13,9 @@ export default {
     computed: {
       email (){
         return !this.$store.getters.user ? false : this.$store.getters.user.email
+      },
+      name(){
+        return !this.$store.getters.user ? false : this.$store.getters.user.name
       }
     },
     created(){
@@ -31,11 +31,7 @@ export default {
 </script>
 
 <style scoped>
-  h1, p {
+  h1{
     text-align: center;
-  }
-
-  p {
-    color: red;
   }
 </style>

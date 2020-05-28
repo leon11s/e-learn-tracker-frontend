@@ -20,7 +20,7 @@
                 <v-card-actions>
                     <!-- zaključi tečaj -->
                     <v-col cols="12" sm="4" md="4">
-                        <v-btn color="orange" text>
+                        <v-btn color="orange" text @click="endCourse();">
                             End course
                         </v-btn>
                     </v-col>
@@ -69,7 +69,7 @@
                                             <!-- naslovna vrstica -->
                                             <v-toolbar  dark color="primary">
                                                 <v-btn icon dark @click="dialog_edit = false"><v-icon>mdi-close</v-icon></v-btn>
-                                                <v-toolbar-title>Settings</v-toolbar-title>
+                                                <v-toolbar-title>Edit course: {{ course.course_name }}</v-toolbar-title>
                                                 <v-spacer></v-spacer>
                                                 <v-toolbar-items>
                                                     <v-btn dark text @click="saveEditCourse">Save</v-btn>
@@ -242,8 +242,22 @@ export default {
                 course_id: this.course.course_id,
                 data: editCourseFormData
             }
+            this.$store.dispatch('updateCourse', updateData)
+        },
+        endCourse(){
+            const editCourseFormData = {
+              course_provider: this.course.course_provider,
+              course_name: this.course.course_name,
+              course_start_date: this.course.course_start_date,
+              course_status: "Ended",
+              course_URL: this.course.course_URL,
+              course_payment_type: this.course.course_payment_type,
+            }
 
-            console.log(editCourseFormData)
+            const updateData = {
+                course_id: this.course.course_id,
+                data: editCourseFormData
+            }
             this.$store.dispatch('updateCourse', updateData)
         }
     }
@@ -251,11 +265,5 @@ export default {
 </script>
 
 <style>
-.bg-custom_device_card {
-    background-color: #79bac1;
-}
 
-.card-text {
-    text-align: left;
-}
 </style>

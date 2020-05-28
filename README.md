@@ -1,4 +1,4 @@
-# elearn-tracker
+# elearn-tracker-frontend
 
 > A frontend for E-learn tracker
 

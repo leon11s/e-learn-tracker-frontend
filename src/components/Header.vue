@@ -14,9 +14,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <router-link v-if="auth" to="/dashboard" tag="li" activeClass="active"><a class="nav-link">Dashboard</a></router-link>
-                <router-link v-if="auth" to="/courses" tag="li" activeClass="active"><a class="nav-link">Courses</a></router-link>
+                <router-link v-if="auth" to="/courses" tag="li" activeClass="active"><a class="nav-link" @click="courses">Courses</a></router-link>
 
-                <!-- TODO Dodaj ostale linke in gumbe -->
         
             </ul>
                 <router-link v-if="!auth" to="/signup" type="button" class="btn btn-dark buttons-custom" tag="button">Sign Up</router-link>
@@ -36,6 +35,9 @@ export default {
     methods: {
         onLogout () {
             this.$store.dispatch('logout')
+        },
+        courses() {
+            return this.$store.dispatch('getAllCourses');
         }
     }
 }
@@ -44,7 +46,7 @@ export default {
 <style>
 /* change the background color - https://colorhunt.co/palette/171695*/ 
 .bg-custom {
-    background-color: #2a7886;
+    background-color: whitesmoke;
 }
 
 .buttons-custom {

@@ -24,7 +24,11 @@ export default new Vuex.Store({
             state.user = null
         },
         'SWOW_ALL_COURSES' (state, courses) {
+            courses = courses.sort((a,b) => {
+                return a['course_id'] < b['course_id']
+            });
             state.courses_all = courses;
+            
         }
     },
     actions: {
@@ -149,7 +153,7 @@ export default new Vuex.Store({
             return state.idToken !== null 
         },
         courses: state => {
-            return state.courses_all;
+            return state.courses_all
         }
     },
 })
